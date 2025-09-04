@@ -4,43 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dumb Charades Game</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
     <style>
         @import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
         
         .card {
-            @apply bg-gray-800 rounded-2xl shadow-lg border border-gray-700 p-6 !important;
+            @apply bg-gray-800 rounded-2xl shadow-lg border border-gray-700 p-3;
+        }
+        
+        .light .card {
+            @apply bg-white border-gray-200 text-gray-900;
         }
         
         .btn-primary {
-            @apply px-4 py-2 rounded-xl font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-200 !important;
+            @apply px-4 py-2 rounded-xl font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-200;
+        }
+        
+        .light .btn-primary {
+            @apply bg-blue-500 hover:bg-blue-600;
         }
         
         .btn-secondary {
-            @apply px-4 py-2 rounded-xl font-medium bg-gray-700 text-white hover:bg-gray-600 transition-all duration-200 !important;
+            @apply px-4 py-2 rounded-xl font-medium bg-gray-700 text-white hover:bg-gray-600 transition-all duration-200;
         }
         
-        .btn-success {
-            @apply px-10 py-5 rounded-full text-xl font-bold bg-gradient-to-r from-green-400 to-green-600 text-white hover:from-green-500 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-2 border-white/20 !important;
-        }
-        
-        .btn-danger {
-            @apply px-10 py-5 rounded-full text-xl font-bold bg-gradient-to-r from-red-400 to-red-600 text-white hover:from-red-500 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-2 border-white/20 !important;
-        }
-        
-        .btn-pass {
-            @apply px-10 py-5 rounded-full text-xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 text-white hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-2 border-white/20 !important;
+        .light .btn-secondary {
+            @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
         }
         
         .btn-toggle {
-            @apply px-8 py-4 rounded-full text-lg font-bold bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-2 border-white/20 !important;
+            @apply px-6 py-3 rounded-full text-base font-bold bg-gradient-to-r from-gray-500 to-gray-600 text-white hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-2 border-white/20;
+        }
+        
+        .light .btn-toggle {
+            @apply from-gray-300 to-gray-400 text-gray-900 border-gray-200;
+        }
+        
+        .light {
+            @apply bg-white text-gray-900;
+        }
+        
+        .custom-btn {
+            display: inline-block;
+            padding: 12px 40px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .custom-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-guessed {
+            background: linear-gradient(to right, #28a745, #218838);
+        }
+        
+        .light .btn-guessed {
+            background: linear-gradient(to right, #34c759, #28a745);
+            border: 2px solid #e2e8f0;
+        }
+        
+        .btn-not-guessed {
+            background: linear-gradient(to right, #dc3545, #c82333);
+        }
+        
+        .light .btn-not-guessed {
+            background: linear-gradient(to right, #e4606d, #dc3545);
+            border: 2px solid #e2e8f0;
+        }
+        
+        .btn-pass {
+            background: linear-gradient(to right, #ffc107, #e0a800);
+        }
+        
+        .light .btn-pass {
+            background: linear-gradient(to right, #ffca2c, #ffc107);
+            border: 2px solid #e2e8f0;
+        }
+        
+        .poster-img {
+            max-width: 200px !important;
+            height: auto !important;
+            border-radius: 0.5rem;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen">
+<body class="bg-gray-900 text-gray-100 min-h-fit">
     <div id="app" class="max-w-3xl mx-auto p-4">
         <!-- Header -->
-        <h1 class="text-3xl font-extrabold mb-6 text-center">Dumb Charades 🎭</h1>
+        <h1 class="text-3xl font-extrabold mb-6 text-center">Dumb Charades 🎬</h1>
         
         <!-- Theme Toggle -->
         <div class="flex items-center justify-between mb-4">
@@ -57,7 +119,7 @@
                 <div id="teamScores" class="flex gap-8">
                     <!-- Team scores will be populated by JS -->
                 </div>
-                <button id="resetScores" class="btn-danger" type="button">Reset</button>
+                <button id="resetScores" class="btn-primary" type="button">Reset</button>
             </div>
         </div>
         
@@ -72,7 +134,7 @@
         
         <!-- Tab Content -->
         <div id="playTab" class="tab-content">
-            <div class="space-y-6">
+            <div class="space-y-2">
                 <div id="gameArea">
                     <button id="startRound" class="w-full px-6 py-4 rounded-2xl bg-gradient-to-r from-fuchsia-400 to-blue-400 text-white font-semibold shadow-lg hover:opacity-90 border-2 border-white/20" type="button">
                         Start Round
@@ -87,14 +149,6 @@
                     <div>
                         <label class="block text-sm font-medium mb-1">Round Duration (sec)</label>
                         <input type="number" id="duration" value="60" class="w-full px-3 py-2 rounded-xl bg-gray-700 text-white">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Source</label>
-                        <select id="source" class="w-full px-3 py-2 rounded-xl bg-gray-700 text-white">
-                            <option value="local">Local Bank</option>
-                            <option value="tmdb_hollywood">TMDb (Hollywood)</option>
-                            <option value="tmdb_bollywood">TMDb (Bollywood)</option>
-                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1">Language</label>
@@ -114,7 +168,7 @@
                     <!-- Detailed scores will be populated by JS -->
                 </div>
                 <div class="flex justify-end mt-4">
-                    <button id="resetDetailedScores" class="btn-danger" type="button">Reset Scores</button>
+                    <button id="resetDetailedScores" class="btn-primary" type="button">Reset Scores</button>
                 </div>
             </div>
         </div>
@@ -129,7 +183,6 @@
             ],
             settings: {
                 duration: 60,
-                source: 'local',
                 lang: 'mixed'
             },
             current: null,
@@ -138,7 +191,8 @@
             darkMode: true,
             activeTab: 'play',
             history: [],
-            isPromptHidden: false
+            isPromptHidden: false,
+            isDetailsHidden: true
         };
 
         // Prompt Bank (Expanded)
@@ -180,6 +234,20 @@
         // TMDB API Key
         const TMDB_KEY = "73d810661de60fdebce5436ea8392d23";
 
+        // Genre List
+        let genreList = [];
+        const fetchGenres = async () => {
+            try {
+                const res = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_KEY}&language=en-US`);
+                if (!res.ok) throw new Error(`Failed to fetch genres: ${res.status} ${res.statusText}`);
+                const data = await res.json();
+                genreList = data.genres || [];
+            } catch (err) {
+                console.error('Error fetching genres:', err.message);
+                genreList = [];
+            }
+        };
+
         // Utility Functions
         const nid = () => Math.random().toString(36).slice(2);
         const fmtTime = (s) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
@@ -217,14 +285,12 @@
                     updateGameDisplay();
                 } else {
                     clearInterval(timerInterval);
-                    // Time's up sound
                     playBuzzer();
                 }
             }, 1000);
         };
 
         const playBuzzer = () => {
-            // Simple buzzer sound using Web Audio API
             try {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
@@ -251,94 +317,140 @@
             saveState();
         };
 
+        // Toggle Details Visibility
+        const toggleDetails = () => {
+            gameState.isDetailsHidden = !gameState.isDetailsHidden;
+            updateGameDisplay();
+            saveState();
+        };
+
         // Get New Prompt
         const getNewPrompt = async (keepTeam = false) => {
-            try {
-                let prompt;
-                
-                // Switch active team unless keepTeam is true
-                if (!keepTeam) {
-                    gameState.activeTeam = gameState.activeTeam === 'team1' ? 'team2' : 'team1';
-                }
-                
-                if (gameState.settings.source === 'local') {
-                    const list = gameState.settings.lang === 'hi' 
-                        ? promptBank.hi.map(item => item.devanagari)
-                        : gameState.settings.lang === 'en' 
-                        ? promptBank.hi.map(item => item.roman)
-                        : promptBank.mixed;
-                    const available = list.filter(word => !gameState.history.some(h => h.text.toLowerCase() === word.toLowerCase()));
-                    if (available.length === 0) {
-                        gameState.history = []; // Reset history when pool is exhausted
+            let retries = 1;
+            const maxRetries = 1;
+
+            const fetchPrompt = async () => {
+                try {
+                    let prompt;
+                    
+                    if (!keepTeam) {
+                        gameState.activeTeam = gameState.activeTeam === 'team1' ? 'team2' : 'team1';
                     }
-                    const pool = available.length ? available : list;
-                    const text = randomItem(pool) || "(no prompt)";
-                    prompt = { id: nid(), text, source: 'local' };
-                } else {
-                    // Randomize page to access broader movie pool (1 to 500)
-                    const page = Math.floor(Math.random() * 500) + 1;
-                    const originalLang = gameState.settings.source === 'tmdb_bollywood' ? 'hi' : 'en';
+
+                    let originalLang;
+                    if (gameState.settings.lang === 'mixed') {
+                        originalLang = Math.random() > 0.5 ? 'en' : 'hi';
+                    } else {
+                        originalLang = gameState.settings.lang === 'hi' ? 'hi' : 'en';
+                    }
+                    
                     const displayLang = gameState.settings.lang === 'mixed' 
                         ? (Math.random() > 0.5 ? 'en-US' : 'hi-IN') 
                         : (gameState.settings.lang === 'hi' ? 'hi-IN' : 'en-US');
                     
+                    const page = Math.floor(Math.random() * 500) + 1;
+                    
                     const url = `https://api.themoviedb.org/3/discover/movie?with_original_language=${originalLang}&language=${displayLang}&sort_by=popularity.desc&page=${page}&api_key=${TMDB_KEY}`;
                     
                     const res = await fetch(url);
-                    if (!res.ok) throw new Error(`TMDb error ${res.status}`);
+                    if (!res.ok) throw new Error(`TMDb error: ${res.status} ${res.statusText}`);
                     const data = await res.json();
                     const results = data.results || [];
+                    if (!results.length) throw new Error('No movies returned from TMDb');
+                    
                     const available = results.filter(m => !gameState.history.some(h => h.text.toLowerCase() === (m.original_title || m.title).toLowerCase()));
                     const pool = available.length ? available : results;
                     const pick = randomItem(pool);
-                    if (pick) {
-                        const isHindiDisplay = gameState.settings.lang === 'hi' || (gameState.settings.lang === 'mixed' && displayLang === 'hi-IN');
-                        const title = isHindiDisplay 
-                            ? (pick.title || pick.original_title || "(untitled)")
-                            : (pick.original_title || pick.title || "(untitled)");
-                        prompt = { 
-                            id: String(pick.id), 
-                            text: title, 
-                            source: gameState.settings.source 
+                    if (!pick) throw new Error('No valid movie selected');
+                    
+                    const creditsUrl = `https://api.themoviedb.org/3/movie/${pick.id}/credits?api_key=${TMDB_KEY}`;
+                    const creditsRes = await fetch(creditsUrl);
+                    const creditsData = creditsRes.ok ? await creditsRes.json() : { cast: [] };
+                    const cast = creditsData.cast.slice(0, 3).map(actor => actor.name).join(', ') || 'Not available';
+                    
+                    const genres = pick.genre_ids && genreList.length
+                        ? pick.genre_ids
+                            .map(id => genreList.find(g => g.id === id)?.name)
+                            .filter(Boolean)
+                            .join(', ') || 'Not available'
+                        : 'Not available';
+                    
+                    const isHindiDisplay = gameState.settings.lang === 'hi' || (gameState.settings.lang === 'mixed' && displayLang === 'hi-IN');
+                    const title = isHindiDisplay 
+                        ? (pick.title || pick.original_title || "(untitled)")
+                        : (pick.original_title || pick.title || "(untitled)");
+                    prompt = { 
+                        id: String(pick.id), 
+                        text: title,
+                        cast: cast,
+                        genres: genres,
+                        release_date: pick.release_date || "Unknown",
+                        link: `https://www.themoviedb.org/movie/${pick.id}`,
+                        poster: pick.poster_path ? `https://image.tmdb.org/t/p/w500${pick.poster_path}` : null,
+                        language: pick.original_language === 'hi' ? 'Hindi' : 'English'
+                    };
+
+                    if (prompt) {
+                        gameState.current = prompt;
+                        gameState.history = [prompt, ...gameState.history].slice(0, 100);
+                        gameState.timeLeft = gameState.settings.duration;
+                        gameState.isPromptHidden = false;
+                        gameState.isDetailsHidden = true;
+                        startTimer();
+                        updateGameDisplay();
+                    }
+                } catch (err) {
+                    throw err;
+                }
+            };
+
+            while (retries >= 0) {
+                try {
+                    await fetchPrompt();
+                    return;
+                } catch (err) {
+                    console.error(`Error getting prompt (Attempt ${maxRetries - retries + 1}): ${err.message}`);
+                    retries--;
+                    if (retries < 0) {
+                        const list = gameState.settings.lang === 'hi' 
+                            ? promptBank.hi.map(item => item.devanagari)
+                            : gameState.settings.lang === 'en' 
+                            ? promptBank.en
+                            : promptBank.mixed;
+                        const available = list.filter(word => !gameState.history.some(h => h.text.toLowerCase() === word.toLowerCase()));
+                        if (available.length === 0) {
+                            gameState.history = [];
+                        }
+                        const pool = available.length ? available : list;
+                        const text = randomItem(pool) || "(no prompt)";
+                        const language = gameState.settings.lang === 'hi' ? 'Hindi' : 
+                                        gameState.settings.lang === 'en' ? 'English' : 
+                                        (text in promptBank.en ? 'English' : 'Hindi');
+                        const prompt = { 
+                            id: nid(), 
+                            text, 
+                            cast: "Not available", 
+                            genres: "Not available",
+                            release_date: "Unknown", 
+                            link: null, 
+                            poster: null,
+                            language
                         };
+                        gameState.current = prompt;
+                        gameState.history = [prompt, ...gameState.history].slice(0, 100);
+                        gameState.timeLeft = gameState.settings.duration;
+                        gameState.isPromptHidden = false;
+                        gameState.isDetailsHidden = true;
+                        startTimer();
+                        updateGameDisplay();
                     }
                 }
-
-                if (prompt) {
-                    gameState.current = prompt;
-                    gameState.history = [prompt, ...gameState.history].slice(0, 100);
-                    gameState.timeLeft = gameState.settings.duration;
-                    gameState.isPromptHidden = false; // Show new prompt by default
-                    startTimer();
-                    updateGameDisplay();
-                }
-            } catch (err) {
-                console.error('Error getting prompt:', err);
-                // Fallback to local
-                const list = gameState.settings.lang === 'hi' 
-                    ? promptBank.hi.map(item => item.devanagari)
-                    : gameState.settings.lang === 'en' 
-                    ? promptBank.hi.map(item => item.roman)
-                    : promptBank.mixed;
-                const available = list.filter(word => !gameState.history.some(h => h.text.toLowerCase() === word.toLowerCase()));
-                if (available.length === 0) {
-                    gameState.history = []; // Reset history when pool is exhausted
-                }
-                const pool = available.length ? available : list;
-                const text = randomItem(pool) || "(no prompt)";
-                const prompt = { id: nid(), text, source: 'local' };
-                gameState.current = prompt;
-                gameState.history = [prompt, ...gameState.history].slice(0, 100);
-                gameState.timeLeft = gameState.settings.duration;
-                gameState.isPromptHidden = false; // Show new prompt by default
-                startTimer();
-                updateGameDisplay();
             }
         };
 
         // Pass Prompt
         const passPrompt = () => {
-            getNewPrompt(true); // Keep the current team
+            getNewPrompt(true);
         };
 
         // Update Score
@@ -350,6 +462,7 @@
             gameState.current = null;
             gameState.timeLeft = 0;
             gameState.isPromptHidden = false;
+            gameState.isDetailsHidden = true;
             clearInterval(timerInterval);
             updateDisplay();
             saveState();
@@ -407,7 +520,6 @@
 
         const updateSettings = () => {
             document.getElementById('duration').value = gameState.settings.duration;
-            document.getElementById('source').value = gameState.settings.source;
             document.getElementById('language').value = gameState.settings.lang;
         };
 
@@ -417,17 +529,36 @@
             if (gameState.current) {
                 gameArea.innerHTML = `
                     <div class="card">
-                        <div class="space-y-8 text-center">
-                            <div class="text-2xl font-bold">
-                                ${gameState.isPromptHidden ? 'Prompt Hidden' : gameState.current.text}
-                            </div>
-                            <div class="text-5xl font-bold text-white bg-gray-700/50 rounded-lg p-4">
-                                ⏳ ${fmtTime(gameState.timeLeft)}
-                            </div>
-                            <div class="flex justify-center">
+                        <div class="space-y-2 text-center">
+                            ${gameState.isPromptHidden ? `
+                                <div class="text-2xl font-bold">Prompt and Details Hidden</div>
+                            ` : `
+                                <div class="text-base font-bold">${gameState.current.text}</div>
+                                <div class="text-xs font-medium">Language: ${gameState.current.language}</div>
+                                ${!gameState.isDetailsHidden ? `
+                                    ${gameState.current.poster ? `
+                                        <img src="${gameState.current.poster}" alt="${gameState.current.text} poster" class="poster-img" style="max-width: 200px; height: auto; border-radius: 0.5rem; margin-left: auto; margin-right: auto;">
+                                    ` : ''}
+                                    <div class="text-xs opacity-80">
+                                        Genres: ${gameState.current.genres}<br>
+                                        Cast: ${gameState.current.cast}<br>
+                                        Release Date: ${gameState.current.release_date}
+                                        ${gameState.current.link ? `<br><a href="${gameState.current.link}" target="_blank" class="text-blue-400 hover:underline">View on TMDb</a>` : ''}
+                                    </div>
+                                ` : ''}
+                            `}
+                            <div class="flex justify-center gap-2">
                                 <button id="togglePromptBtn" class="btn-toggle" type="button">
                                     ${gameState.isPromptHidden ? 'Show Prompt' : 'Hide Prompt'}
                                 </button>
+                                ${!gameState.isPromptHidden ? `
+                                    <button id="toggleDetailsBtn" class="btn-toggle" type="button">
+                                        ${gameState.isDetailsHidden ? 'Show Details' : 'Hide Details'}
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <div class="text-5xl font-bold text-white bg-gray-700/50 rounded-lg p-4">
+                                ⏳ ${fmtTime(gameState.timeLeft)}
                             </div>
                             <div class="flex justify-center">
                                 <select id="activeTeamSelect" class="mx-auto w-40 px-3 py-2 rounded-xl bg-gray-700 text-white">
@@ -436,24 +567,47 @@
                                     ).join('')}
                                 </select>
                             </div>
-                            <div class="flex justify-center gap-6">
-                                <button id="guessedBtn" class="w-36 btn-success" type="button">✅ Guessed</button>
-                                <button id="notGuessedBtn" class="w-36 btn-danger" type="button">❌ Not Guessed</button>
-                                <button id="passBtn" class="w-36 btn-pass" type="button">⏭️ Pass</button>
+                            <div class="flex justify-center gap-4">
+                                <button id="guessedBtn" class="custom-btn btn-guessed" type="button">✅ Guessed</button>
+                                <button id="notGuessedBtn" class="custom-btn btn-not-guessed" type="button">❌ Not Guessed</button>
+                                <button id="passBtn" class="custom-btn btn-pass" type="button">⏭️ Pass</button>
                             </div>
                         </div>
                     </div>
                 `;
                 
-                document.getElementById('activeTeamSelect').addEventListener('change', (e) => {
-                    gameState.activeTeam = e.target.value;
-                    saveState();
-                });
+                const activeTeamSelect = document.getElementById('activeTeamSelect');
+                if (activeTeamSelect) {
+                    activeTeamSelect.addEventListener('change', (e) => {
+                        gameState.activeTeam = e.target.value;
+                        saveState();
+                    });
+                }
                 
-                document.getElementById('guessedBtn').addEventListener('click', () => updateScore(1));
-                document.getElementById('notGuessedBtn').addEventListener('click', () => updateScore(0));
-                document.getElementById('passBtn').addEventListener('click', passPrompt);
-                document.getElementById('togglePromptBtn').addEventListener('click', togglePrompt);
+                const guessedBtn = document.getElementById('guessedBtn');
+                if (guessedBtn) {
+                    guessedBtn.addEventListener('click', () => updateScore(1));
+                }
+                
+                const notGuessedBtn = document.getElementById('notGuessedBtn');
+                if (notGuessedBtn) {
+                    notGuessedBtn.addEventListener('click', () => updateScore(0));
+                }
+                
+                const passBtn = document.getElementById('passBtn');
+                if (passBtn) {
+                    passBtn.addEventListener('click', passPrompt);
+                }
+                
+                const togglePromptBtn = document.getElementById('togglePromptBtn');
+                if (togglePromptBtn) {
+                    togglePromptBtn.addEventListener('click', togglePrompt);
+                }
+                
+                const toggleDetailsBtn = document.getElementById('toggleDetailsBtn');
+                if (toggleDetailsBtn) {
+                    toggleDetailsBtn.addEventListener('click', toggleDetails);
+                }
             } else {
                 gameArea.innerHTML = `
                     <button id="startRound" class="w-full px-6 py-4 rounded-2xl bg-gradient-to-r from-fuchsia-400 to-blue-400 text-white font-semibold shadow-lg hover:opacity-90 border-2 border-white/20" type="button">
@@ -461,31 +615,34 @@
                     </button>
                 `;
                 
-                document.getElementById('startRound').addEventListener('click', () => getNewPrompt(false));
+                const startRoundBtn = document.getElementById('startRound');
+                if (startRoundBtn) {
+                    startRoundBtn.addEventListener('click', () => getNewPrompt(false));
+                }
             }
         };
 
         // Theme Toggle
         const toggleTheme = () => {
             gameState.darkMode = !gameState.darkMode;
+            document.documentElement.classList.toggle('light', !gameState.darkMode);
             document.documentElement.classList.toggle('dark', gameState.darkMode);
             document.getElementById('themeToggle').textContent = gameState.darkMode ? '☀️ Light' : '🌙 Dark';
             saveState();
         };
 
         // Event Listeners
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchGenres();
             loadState();
             
-            // Apply dark mode
+            document.documentElement.classList.toggle('light', !gameState.darkMode);
             document.documentElement.classList.toggle('dark', gameState.darkMode);
             
-            // Event listeners
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
             document.getElementById('resetScores').addEventListener('click', resetScores);
             document.getElementById('resetDetailedScores').addEventListener('click', resetScores);
             
-            // Tab buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     gameState.activeTab = btn.dataset.tab;
@@ -494,14 +651,8 @@
                 });
             });
             
-            // Settings
             document.getElementById('duration').addEventListener('change', (e) => {
                 gameState.settings.duration = parseInt(e.target.value);
-                saveState();
-            });
-            
-            document.getElementById('source').addEventListener('change', (e) => {
-                gameState.settings.source = e.target.value;
                 saveState();
             });
             
@@ -510,7 +661,6 @@
                 saveState();
             });
             
-            // Initial display
             updateDisplay();
         });
     </script>
